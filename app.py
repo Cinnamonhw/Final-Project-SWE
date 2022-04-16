@@ -8,7 +8,7 @@ from imdb import search_movies
 from tmdb import get_trending, search_tv
 from books import search_books
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="./static/react")
 
 bp = flask.Blueprint(
     "bp",
