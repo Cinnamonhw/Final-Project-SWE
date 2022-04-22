@@ -5,6 +5,7 @@ import Search from "./components/search";
 import Home from "./components/home";
 import MyList from "./components/mylist";
 import Profile from "./components/profile";
+import Trending from "./components/Trending";
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -17,6 +18,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/trending_page" element={<Trending />} />
         <Route path="/search" element={<Search />} />
         <Route path="/mylist" element={<MyList />} />
         <Route path="/profile" element={<Profile />} />

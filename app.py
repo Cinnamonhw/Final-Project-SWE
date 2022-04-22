@@ -38,11 +38,11 @@ def index():
     return flask.render_template("index.html")
 
 
-# # API Route
-# @app.route("/endpoint")
-# def index():
-#     # do stuff
-#     return {"names": ["Name1", "Name2", "Name3"]}
+# API Route
+@app.route("/endpoint")
+def index():
+    # do stuff
+    return {"names": ["Name1", "Name2", "Name3"]}
 
 
 @app.route("/search", methods=["POST"])

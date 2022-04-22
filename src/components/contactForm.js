@@ -2,10 +2,17 @@ import emailjs from "emailjs-com";
 import React from 'react';
 import { Link } from "react-router-dom";
 import { IoIosSearch } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import './components.css';
 
 const contact_form_key = process.env.REACT_APP_CONTACTFORM_KEY
 
 export default function ContactUs() {
+    const navigate = useNavigate()
+
+    function handleClick() {
+        navigate('/trending_page');
+    }
 
     function sendEmail(e) {
         e.preventDefault();
@@ -21,9 +28,7 @@ export default function ContactUs() {
 
     return (
         <div>
-            <button>
-                <a href="/trending_page">Return to App</a>
-            </button>
+            <button onClick={handleClick}>Return to App</button>
             <div className="container">
                 <form onSubmit={sendEmail}>
                     <div className="row pt-5 mx-auto">

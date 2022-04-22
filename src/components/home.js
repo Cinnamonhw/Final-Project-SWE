@@ -7,9 +7,14 @@ import Movie from '../Movies';
 import Books from '../Books';
 import Searchbar from '../SearchBar';
 import './components.css';
+// import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
+    const navigate = useNavigate()
 
+    function handleClick() {
+        navigate('/trending_page');
+    }
 
     return (
         <main>
@@ -17,9 +22,8 @@ export default function Home() {
                 <div className="text">
                     <p className="icons">Welcome To PersonalPix</p>
                     <p className="icons">A multi-media tracking app</p>
-                    <div className="button">
-                        <a href="/trending_page"><button>Go to App!</button></a>
-                    </div>
+                    <button onClick={handleClick}>Go to App!</button>
+                   
                 </div>
             </div>
             <div className="function">
