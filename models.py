@@ -51,11 +51,11 @@ class Users(db.Model):
 
 class UserProfile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False)
+    user_id = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     first_name = db.Column(db.String(50))
     last_name = db.Column(db.String(50))
-    profile_pic = db.Column(db.BLOB)
+    # profile_pic = db.Column(db.BLOB)
 
     def updateUserProfile(user_id, email, first_name, last_name, profile_pic):
         profile = UserProfile.query.filter_by(user_id=user_id).first()
@@ -68,8 +68,8 @@ class UserProfile(db.Model):
                 profile.first_name = first_name
             if last_name != "":
                 profile.last_name = last_name
-            if profile_pic is not None:
-                profile.profile_pic = profile_pic
+            # if profile_pic is not None:
+            #     profile.profile_pic = profile_pic
             db.session.commit()
             return "Profile Successfully Updated"
 
@@ -81,40 +81,23 @@ class UserProfile(db.Model):
             return userProfile
 
 
-class MediaTypes(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
-
-    def getAllMediaTypes():
-        mediaTypes = MediaTypes.query.all()
-        return mediaTypes
-
-    def getMediaType(id):
-        mediaType = MediaTypes.query.filter_by(id=id).first()
-        if not mediaType:
-            return "Media Type Not Found"
-        else:
-            return mediaType
-
-
 class Lists(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False)
+    user_id = db.Column(db.String(100), nullable=False)
     list_name = db.Column(db.String(100), nullable=False)
-    media_type_id = db.Column(
-        db.Integer, db.ForeignKey("MediaTypes.id"), nullable=False
-    )
+    media_type = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(250))
 
-    def addList(user_id, list_name, media_type_id, description):
+    def addList(user_id, list_name, media_type, description):
         new_list = Lists(
             user_id=user_id,
             list_name=list_name,
-            media_type_id=media_type_id,
+            media_type=media_type,
             description=description,
         )
         db.session.add(new_list)
         db.session.commit()
+        return new_list.id
 
     def editList(id, list_name, description):
         list = Lists.query.filter_by(id=id).first()
@@ -132,49 +115,78 @@ class Lists(db.Model):
         Lists.query.filter_by(id=id).delete()
         db.session.commit()
 
+    def getUserLists(user_id):
+        lists = db.session.query(Lists).filter_by(user_id=user_id).all()
+        if not lists:
+            return []
+        else:
+            my_lists = []
+            for list in lists:
+                id = list.id
+                user_id = list.user_id
+                list_name = list.list_name
+                media_type = list.media_type
+                description = list.description
+                list_content = ListItems.getListItems(id)
+                my_lists.append(
+                    {
+                        "id": id,
+                        "user_id": user_id,
+                        "list_name": list_name,
+                        "media_type": media_type,
+                        "description": description,
+                        "list_content": list_content,
+                    }
+                )
+
+            return my_lists
+
 
 class ListItems(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    list_id = db.Column(db.Integer, db.ForeignKey("Lists.id"), nullable=False)
+    list_id = db.Column(db.Integer, nullable=False)
     media_id = db.Column(
-        db.Integer, nullable=False
+        db.String(50), nullable=False
     )  # may need to change to string depending on IDs given by API
     rating = db.Column(db.Integer)
-    ranking = db.Column(db.Integer)
 
-    def addListItem(list_id, media_id, rating, ranking):
+    def addListItem(list_id, media_id):
         listItem = ListItems.query.filter_by(list_id=list_id, media_id=media_id).first()
         if not listItem:
-            newListItem = ListItems(
-                list_id=list_id, media_id=media_id, rating=rating, ranking=ranking
-            )
+            newListItem = ListItems(list_id=list_id, media_id=media_id)
             db.session.add(newListItem)
             db.session.commit()
+            return newListItem.id
         else:
-            return "Item Already in List"
-
-    def updateListItem(id, rating, ranking):
-        listItem = ListItems.query.filter_by(id=id).first()
-        if not listItem:
-            return "List Item Not Found"
-        else:
-            if rating != "":
-                listItem.rating = rating
-            if ranking != "":
-                listItem.ranking = ranking
-            db.session.commit()
-            return "List Item Updated"
+            return -1
 
     def deleteListItem(id):
         ListItems.query.filter_by(id=id).delete()
         db.session.commit()
 
+    def getListItems(id):
+        items = ListItems.query.filter_by(list_id=id).all()
+        list_items = []
+        for item in items:
+            id = item.id
+            list_id = item.list_id
+            media_id = item.media_id
+            list_items.append(
+                {
+                    "id": id,
+                    "list_id": list_id,
+                    "media_id": media_id,
+                }
+            )
+
+        return list_items
+
 
 class ListSharedWith(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    list_id = db.Column(db.Integer, db.ForeignKey("Lists.id"), nullable=False)
+    list_id = db.Column(db.Integer, nullable=False)
     # Only user_id OR email need to be populated
-    user_id = db.Column(db.Integer, db.ForeignKey("Users.id"))
+    user_id = db.Column(db.String(100))
     email = db.Column(db.String(100))
 
     def addSharedWith(list_id, user_id, email):

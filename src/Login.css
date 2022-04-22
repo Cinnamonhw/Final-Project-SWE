@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: #6765c7;
+}
+
+.box {
+    width: 300px;
+    padding: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 275px;
+    background: white;
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+h1 {
+    font-family: sans-serif;
+    color: #6765c7;
+    text-align: center;
+    border-bottom: 1px solid silver;
+
+}
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-top: 45px;
+}

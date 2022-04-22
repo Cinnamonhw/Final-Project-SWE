@@ -5,10 +5,11 @@ import Search from "./components/search";
 import Home from "./components/home";
 import MyList from "./components/mylist";
 import Profile from "./components/profile";
-import Login from './components/Login';
-import './index.css';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import Login from './components/Login';
+import ContactUs from './components/contactForm';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,6 +21,8 @@ ReactDOM.render(
         <Route path="/mylist" element={<MyList />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/contactForm" element={<ContactUs />} />
+
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

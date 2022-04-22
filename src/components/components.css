@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css?family=Codystar');
+
+.pageTitle {
+    font-family: 'Codystar';
+    text-align: center;
+    font-size: 50px;
+}
+
+.main {
+    background-color: white;
+}
+
+.titles {
+    color: black;
+}
+
+.trending {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.container1 {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding: 5px;
+    margin: 5px 0;
+    background-color: #6765c7;
+    border-radius: 10px;
+    position: relative;
+}
+
+.container1:hover {
+    background-color: grey;
+    color: white;
+}
+
+
+.logout {
+    float: right;
+    margin-bottom: 50px;
+}
+
+/* .icons {
+    font-size: 30px;
+    text-align: center;
+    color: white;
+} */
+
+.hero-image {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("booksontv.jpeg");
+    height: 300px;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.text {
+    text-align: center;
+    position: absolute;
+    top: 30%;
+    left: 35%;
+    font-size: 40px;
+    color: white;
+}
+
+.button {
+    font-size: 20px;
+}
+
+.function {
+    background-color: white;
+    text-align: center;
+}
+
+.child {
+    margin: 0px;
+}

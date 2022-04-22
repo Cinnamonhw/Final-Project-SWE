@@ -18,7 +18,16 @@ def search_books(query):
     response = requests.get(BASE_URL, params=query_params)
     data = response.json()
 
-    return jsonify(results=data["items"])
+    return jsonify(data)
 
 
-# search_books("hunger games")
+def get_book_detail(query):
+    new_url = BASE_URL + "/" + query
+    query_params = {
+        "key": os.getenv("BOOKS_KEY"),
+    }
+
+    response = requests.get(new_url, params=query_params)
+    data = response.json()
+
+    return jsonify(data)

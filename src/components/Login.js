@@ -5,6 +5,7 @@ import { refreshTokenSetup } from '../utils/refreshToken';
 import { useState } from 'react';
 import Home from './home';
 import { useNavigate } from 'react-router-dom';
+import './components.css';
 
 
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID
@@ -18,6 +19,7 @@ function Login() {
       `Logged in successfully welcome ${res.profileObj.name} 😍. \n See console for full profile object.`
     );
     refreshTokenSetup(res);
+    document.cookie = "user_id=" + res.profileObj.googleId + "; path=/";
     navigate('/home');
   };
 
@@ -28,20 +30,16 @@ function Login() {
     );
   };
 
-  return (
-    <div>
+  return (   
       <GoogleLogin
         clientId={clientId}
         buttonText="Login"
         onSuccess={onSuccess}
         onFailure={onFailure}
         cookiePolicy={'single_host_origin'}
-        style={{ marginTop: '100px' }}
+        style={{backgroundColor: 'grey', marginTop: '100px' }}
         isSignedIn={true}
-      />
-
-    </div>
-    
+      /> 
   );
   
 }
