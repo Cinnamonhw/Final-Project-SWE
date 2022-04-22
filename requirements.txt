@@ -4,4 +4,3 @@ flask
 flask-sqlalchemy
 flask-login
 psycopg2
-jinja2==2.6
