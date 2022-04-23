@@ -1,6 +1,7 @@
+"""This handles NY Times Book API"""
+import os
 from flask import jsonify
 import requests
-import os
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
@@ -10,16 +11,13 @@ BASE_URL = "https://api.nytimes.com/svc/books/v3/lists/current/hardcover-fiction
 
 
 def get_best_sellers():
+    """Returns json data on current best sellers"""
     query_params = {
         "list": "hardcover-fiction",
         "api-key": NY_KEY,
     }
-
     response = requests.get(BASE_URL, params=query_params)
-
     best_sellers = response.json()
-    # print(best_sellers)
-
     return jsonify(best_sellers)
 
 

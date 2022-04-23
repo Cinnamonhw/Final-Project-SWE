@@ -5,6 +5,7 @@ import Logout from './Logout';
 import CreateList from './CreateList';
 import SharedLists from './SharedLists';
 import MyLists from './MyLists';
+import './mylist.css';
 
 export default function MyList() {
 
@@ -40,7 +41,6 @@ export default function MyList() {
             res => res.json()
         ).then(
             data => {
-                console.log(data)
                 setMyLists([...data])
             }
         )
@@ -87,20 +87,37 @@ export default function MyList() {
     }
 
     function deleteListHandle(id) {
-        var list = myLists;
-        for (var i = 0; i < list.length; i++) {
-            if (list[i].id == id) {
-                list.splice(i, 1);
-                break;
-            }
+        var postData = {
+            "list_id": id,
         }
-        setMyLists([...list]);
+        fetch("/deleteList", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'applicaton/json',
+            },
+            body: JSON.stringify(postData),
+        }).then(
+            res => res.json()
+        ).then(
+            data => {
+                if (data != -1) {
+                    var list = myLists;
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i].id == id) {
+                            list.splice(i, 1);
+                            break;
+                        }
+                    }
+                    setMyLists([...list]);
+                }
+            }
+        )
     }
 
-    function addToListHandle(list_id, name, media_id) {
+    function addToListHandle(list_id, media_id) {
         var newItem = {
             "id": -1,
-            "name": name,
+            "list_id": list_id,
             "media_id": media_id,
         };
 
@@ -133,25 +150,44 @@ export default function MyList() {
         )
     }
 
-    function removeFromListHandle(list_id, content_id) {
-        var list = myLists;
-        var found = false;
-        for (var i = 0; i < list.length; i++) {
-            if (list[i].id == list_id) {
-                for (var j = 0; j < list[i].list_content.length; j++) {
-                    if (list[i].list_content[j].id == content_id) {
-                        list[i].list_content.splice(j, 1)
-                        found = true;
-                        break;
+    function removeFromListHandle(list_id, item_id) {
+
+        var postData = {
+            "list_id": list_id,
+            "item_id": item_id,
+        }
+        fetch("/deleteItem", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'applicaton/json',
+            },
+            body: JSON.stringify(postData),
+        }).then(
+            res => res.json()
+        ).then(
+            data => {
+                if (data != -1) {
+                    var list = myLists;
+                    var found = false;
+                    for (var i = 0; i < list.length; i++) {
+                        if (list[i].id == list_id) {
+                            for (var j = 0; j < list[i].list_content.length; j++) {
+                                if (list[i].list_content[j].id == item_id) {
+                                    list[i].list_content.splice(j, 1)
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (found) {
+                            break;
+                        }
                     }
+
+                    setMyLists([...list]);
                 }
             }
-            if (found) {
-                break;
-            }
-        }
-
-        setMyLists([...list]);
+        )
     }
 
     return (
@@ -184,14 +220,16 @@ export default function MyList() {
                 <Link to="/search">Search</Link>
 
             </nav >
-            {typeof myLists == "undefined" && <p>Your list is empty</p>}
-            <CreateList onAdd={addListHandle} />
-            {typeof myLists != "undefined" && <MyLists list={myLists}
-                onDeleteList={deleteListHandle}
-                onAddToList={addToListHandle}
-                onRemoveFromList={removeFromListHandle} />}
-            {/* {typeof sharedLists == "undefined" && <p>Your list is empty</p>}
-            {typeof sharedLists != "undefined" && <SharedLists list={sharedLists} />} */}
+            <div className="list-card">
+                {typeof myLists == "undefined" && <p>Your list is empty</p>}
+                <CreateList onAdd={addListHandle} />
+                {typeof myLists != "undefined" && <MyLists list={myLists}
+                    onDeleteList={deleteListHandle}
+                    onAddToList={addToListHandle}
+                    onRemoveFromList={removeFromListHandle} />}
+                {/* {typeof sharedLists == "undefined" && <p>Your list is empty</p>}
+                {typeof sharedLists != "undefined" && <SharedLists list={sharedLists} />} */}
+            </div>
         </main >
 
     );

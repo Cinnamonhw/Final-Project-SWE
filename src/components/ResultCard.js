@@ -2,18 +2,18 @@ import React from 'react'
 
 export default function ResultCard({ results, updateName }) {
 
-    function onClick(event) {
-        var input = event.target.innerText;
-        updateName(input);
+    function onClick(id, event) {
+        var name = event.target.innerText;
+        updateName(name, id);
     }
 
     return (
         <ul>
             {results.map((result) => {
                 return (
-                    <li key={result.id} onClick={onClick}>
-                        {result.title} - {result.id}
-                    </li>
+                    <div key={result.id} onClick={(e) => onClick(result.id, e)} value={result.id}>
+                        {result.title}
+                    </div>
                 )
             })}
         </ul>

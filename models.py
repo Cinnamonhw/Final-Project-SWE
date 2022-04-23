@@ -112,8 +112,10 @@ class Lists(db.Model):
             return "List Updated"
 
     def deleteList(id):
+        ListItems.query.filter_by(list_id=id).delete()
         Lists.query.filter_by(id=id).delete()
         db.session.commit()
+        return 1
 
     def getUserLists(user_id):
         lists = db.session.query(Lists).filter_by(user_id=user_id).all()
@@ -163,6 +165,7 @@ class ListItems(db.Model):
     def deleteListItem(id):
         ListItems.query.filter_by(id=id).delete()
         db.session.commit()
+        return 1
 
     def getListItems(id):
         items = ListItems.query.filter_by(list_id=id).all()

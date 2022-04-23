@@ -1,0 +1,51 @@
+.dd-list {
+    background-color: #aaa9e5;
+    opacity: 1;
+    position: absolute;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+    z-index:9;
+    width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    color: black;
+}
+
+.input {
+    width: 300px;
+}
+
+.flex-container {
+    display: flex;
+    background-color: #6765c7;
+}
+
+.center {
+    justify-content: center;
+}
+
+.flex-child-input {
+    flex: 4;
+    padding: 5px 5px 15px 5px;
+    color: white;
+}
+
+.list-title {
+    text-align: right;
+    font-size: 20px;
+    color: white;
+    padding: 5px;
+}
+
+.content {
+    padding: 0px 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
+    overflow-x: auto;
+}
+
+.list-contents {
+    box-shadow: 6px 5px 15px #0a0932, 0 2px 8px #6765c7;
+    margin-bottom: 35px;
+}

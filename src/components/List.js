@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import ListContent from './ListContent'
 import ResultCard from './ResultCard'
+import './List.css'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faTrash, faAdd } from "@fortawesome/free-solid-svg-icons"
 
 export default function List({ onAddItem, onDeleteList, onDeleteItem, listId, listName, listType, listContent }) {
-
 
     const [newItemName, setNewItemName] = useState('');
     const [newMediaId, setNewMediaId] = useState('');
@@ -105,21 +107,20 @@ export default function List({ onAddItem, onDeleteList, onDeleteItem, listId, li
         }
     }
 
-    function updateName(input) {
-        var inputArr = input.split(" - ");
-        var name = inputArr[0];
-        var media_id = inputArr[1];
+    function updateName(name, id) {
         setNewItemName(name);
-        setNewMediaId(media_id);
+        setNewMediaId(id);
         setResults([]);
     }
 
     function addItemHandle() {
-        if (newItemName == '') {
+        if (newItemName == '' || newMediaId == '') {
+            alert("Please select an item from the dropdown before adding");
             return;
         }
-        onAddItem(listId, newItemName, newMediaId);
+        onAddItem(listId, newMediaId);
         setNewItemName('');
+        setNewMediaId('');
     }
 
     function deleteItemHandle(itemId) {
@@ -127,10 +128,33 @@ export default function List({ onAddItem, onDeleteList, onDeleteItem, listId, li
     }
 
     return (
-        <div>
-            <p>{listName} - {listType}</p>
-            <button onClick={deleteListHandle}>Delete List</button>
-            <ul>
+        <div className="list-contents rounded">
+            <div className="flex-container center rounded-top list-title">
+                <div className="list-title">
+                    {listName} - {listType}
+                </div>
+                <div>
+                    <button onClick={deleteListHandle}><FontAwesomeIcon icon={faTrash} /></button>
+                </div>
+            </div>
+            <div className="header flex-container">
+                <div className="flex-child-input">
+                    <div className="flex-container">
+                        <div className="dd-wrapper flex-child-list">
+                            <div className="dd-header">
+                                <input name="itemName" id="itemName" type="text" className="input" value={newItemName} placeholder={"Search for " + listType + " Title"} onChange={updateNameHandle} autoComplete="off"></input>
+                            </div>
+                            <div className="dd-list">
+                                {results.length > 0 && (
+                                    <ResultCard results={results} updateName={updateName} />
+                                )}
+                            </div>
+                        </div>
+                        <button className="flex-child-add" onClick={addItemHandle}><FontAwesomeIcon icon={faAdd} /></button>
+                    </div>
+                </div>
+            </div>
+            <div className="content rounded">
                 {listContent.map((content) => (
                     <ListContent key={content.id}
                         onDeleteItem={deleteItemHandle}
@@ -139,13 +163,7 @@ export default function List({ onAddItem, onDeleteList, onDeleteItem, listId, li
                         media_type={listType}
                     />
                 ))}
-            </ul>
-            <input name="itemName" id="itemName" type="text" value={newItemName} placeholder="Name" onChange={updateNameHandle}></input>
-            {results.length > 0 && (
-                <ResultCard results={results} updateName={updateName} />
-            )}
-            <button onClick={addItemHandle}>Add To List</button>
-            <hr></hr>
+            </div>
         </div>
     );
 }

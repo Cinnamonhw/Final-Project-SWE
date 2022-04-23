@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import './ListContent.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function MyLists({ onDeleteItem, itemId, media_id, media_type }) {
 
     const [media_name, setMediaName] = useState('');
+    const [thumbnail, setThumbnail] = useState('');
 
     function deleteItemHandle() {
         onDeleteItem(itemId);
@@ -30,18 +34,25 @@ export default function MyLists({ onDeleteItem, itemId, media_id, media_type }) 
             data => {
                 if (media_type == "Movie") {
                     setMediaName(data.title)
+                    setThumbnail(data.image)
                 } else if (media_type == "TV") {
                     setMediaName(data.name)
+                    setThumbnail("https://image.tmdb.org/t/p/w200" + data.poster_path)
                 } else if (media_type == "Book") {
                     setMediaName(data.volumeInfo.title)
+                    setThumbnail(data.volumeInfo.imageLinks.thumbnail)
                 }
             }
         )
     }, [])
 
     return (
-        <li>
-            {media_name} - <button onClick={deleteItemHandle}>Delete Item</button>
-        </li>
+        <div className="listItem">
+            <img className="image" src={thumbnail}></img>
+            <b className="title">{media_name}</b>
+            <div className="delete">
+                <button onClick={deleteItemHandle}><FontAwesomeIcon icon={faTrash} /></button>
+            </div>
+        </div>
     );
 }

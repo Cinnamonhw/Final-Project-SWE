@@ -7,8 +7,8 @@ export default function MyLists({ list, onDeleteList, onAddToList, onRemoveFromL
         onDeleteList(id);
     }
 
-    function addItemHandle(list_id, name, media_id) {
-        onAddToList(list_id, name, media_id);
+    function addItemHandle(list_id, media_id) {
+        onAddToList(list_id, media_id);
     }
 
     function deleteItemHandle(list_id, itemId) {
